@@ -1,0 +1,5 @@
+[caps]
+platformName = 'Android'
+appActivity = 'screens.main.MainActivity'
+appPackage = 'com.findnewclient.cashierapp'
+deviceName = 'test-device'
