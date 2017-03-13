@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'byebug'
 
 RSpec.describe "Example test", :type => :android do
   context "" do

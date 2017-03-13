@@ -31,12 +31,12 @@ RSpec.configure do |config|
       caps: {
         platformName: 'Android',
         appActivity: 'screens.main.MainActivity',
-        #appPackage: 'com.findnewclient.cashierapp',
+#				appPackage: 'com.findnewclient.cashierapp',
         app: Config.apk_path,
         deviceName: 'test-device'
       },
 
-      launchTimeout: 40000
+      launchTimeout: 4000000
     }
 
     @driver = Appium::Driver.new(options)
@@ -46,12 +46,11 @@ RSpec.configure do |config|
   end
 
   config.after(:example, :type => :android) do
-    #@driver.remove_app 'com.findnewclient.cashierapp'
+    @driver.remove_app 'com.findnewclient.cashierapp'
     @driver.driver_quit
   end
 
   #config.after(:context, :type => :android) do
-    #byebug
     #@adb.start_server
     #sn = @adb.devices[0]
     #@adb.uninstall('com.findnewclient.cashierapp', { :serial => sn  })

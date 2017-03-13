@@ -34,3 +34,4 @@ build-iPhoneSimulator/
 .byebug_history
 .rspec
 *.lock
+*.swp
