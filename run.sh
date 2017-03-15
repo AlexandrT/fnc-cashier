@@ -1,6 +1,4 @@
 #!/bin/bash
-for i in $(emulator -list-avds)
-do
-  emulator -avd ${i}
-  rspec spec
-done
+
+cd /root/www/fnc-cashier
+source ~/.bash_profile && rspec spec

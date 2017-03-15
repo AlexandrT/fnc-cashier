@@ -35,3 +35,5 @@ build-iPhoneSimulator/
 .rspec
 *.lock
 *.swp
+*.apk
+*.log
