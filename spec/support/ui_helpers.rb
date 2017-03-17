@@ -5,7 +5,10 @@ module UiHelpers
       find_element(:id => "registration_button").click
 
       sleep(5)
-      find_element(:id => "permission_allow_button").click if find_element(:id => "dialog_container").exist
+      begin
+        xpath("//android.widget.Button[@text='ALLOW']").click
+      rescue Selenium::WebDriver::Error::NoSuchElementError
+      end
     end
 
     def scroll_to_text(text)

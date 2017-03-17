@@ -1,6 +1,7 @@
 FROM java:8
 
-ENV TEST_ENV production
+ENV TEST_ENV development
+ENV DEBIAN_FRONTEND noninteractive
 WORKDIR /root
 
 # install needed packages
@@ -28,7 +29,6 @@ RUN mv android-sdk-linux /usr/local/android-sdk
 RUN chown -R root:root /usr/local/android-sdk/
 
 # Other tools and resources of Android SDK
-ENV DEBIAN_FRONTEND noninteractive
 ENV ANDROID_HOME /usr/local/android-sdk
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 RUN echo y | android update sdk -a --no-ui --force --filter platform-tools
@@ -51,9 +51,6 @@ RUN \
 # Set up and run emulator
 RUN echo n | android create avd --force -n test -t android-23
 ENV HOME /root
-COPY dev/scripts/wait-for-emulator /usr/local/bin/
-COPY dev/scripts/start-emulator /usr/local/bin/
-RUN cd /usr/local/bin && chmod +x start-emulator && chmod +x wait-for-emulator
 
 RUN  mkdir -p /root/www/fnc-cashier
 
@@ -71,8 +68,4 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
 
 RUN cd ~ && npm install -g appium
 
-RUN appium & >> appium.log
-
-RUN start-emulator
-
-CMD ["./run.sh"]
+CMD ["/root/www/fnc-cashier/run.sh"]

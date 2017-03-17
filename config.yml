@@ -1,4 +1,4 @@
 development:
-  apk_path: '/home/amigo/www/fnc-cashier/app-dev-debug.apk'
+  apk_path: '/root/www/fnc-cashier/app-dev-debug.apk'
 
   log_file: 'test.log'
