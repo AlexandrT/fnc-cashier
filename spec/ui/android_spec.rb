@@ -8,8 +8,8 @@ RSpec.describe "Example test", :type => :android do
 
       expect(find_element(:id => "get_code_action")["enabled"]).to eq("false")
 
-      find_element(:id => "text1").click
-      scroll_to_text("Russia")
+      #find_element(:id => "text1").click
+      #scroll_to_text("Russia")
     end
   end
 end

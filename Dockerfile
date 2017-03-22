@@ -19,26 +19,6 @@ RUN \
        git \
        wget
 
-# install Android SDK
-#RUN cd /opt && wget -q --output-document=android-sdk-linux.zip https://dl.google.com/android/repository/tools_r25.2.5-linux.zip
-#RUN cd /opt && unzip android-sdk-linux.zip -d android-sdk-linux
-#RUN cd /opt && rm -f android-sdk-linux.zip
-RUN wget http://dl.google.com/android/android-sdk_r23-linux.tgz
-RUN tar -xvzf android-sdk_r23-linux.tgz && rm android-sdk_r23-linux.tgz
-RUN mv android-sdk-linux /usr/local/android-sdk
-RUN chown -R root:root /usr/local/android-sdk/
-
-# Other tools and resources of Android SDK
-ENV ANDROID_HOME /usr/local/android-sdk
-ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
-RUN echo y | android update sdk -a --no-ui --force --filter platform-tools
-#RUN echo y | android update sdk -a --no-ui --force --filter platform
-#RUN echo y | android update sdk -a --no-ui --force --filter build-tools-23.0.1
-RUN echo y | android update sdk -a --no-ui --force --filter android-23
-RUN echo y | android update sdk -a --no-ui --force --filter sys-img-x86_64-android-23
-RUN echo y | android update adb
-#RUN echo y | android update sdk -a --no-ui --force --filter extra-android-support,extra-android-m2repository,extra-google-google_play_services,extra-google-m2repository
-
 # install rbenv and ruby-build
 RUN \
      git clone https://github.com/rbenv/rbenv.git $HOME/.rbenv \
@@ -48,11 +28,25 @@ RUN \
   && git clone https://github.com/rbenv/ruby-build.git $HOME/.rbenv/plugins/ruby-build \
   && rbenv install 2.3.0
 
+# install Android SDK
+RUN wget http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz \
+  && tar -xvzf android-sdk_r24.4.1-linux.tgz \
+  && rm android-sdk_r24.4.1-linux.tgz \
+  && mv android-sdk-linux /usr/local/android-sdk \
+  && chown -R root:root /usr/local/android-sdk/
+
+# Other tools and resources of Android SDK
+ENV ANDROID_HOME /usr/local/android-sdk
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+RUN echo y | android update sdk -a --no-ui --force --filter platform-tools,build-tools-24.0.0,android-19,sys-img-armeabi-v7a-android-19
+
 # Set up and run emulator
-RUN echo n | android create avd --force -n test -t android-23
+RUN echo n | android create avd --force -n test -t android-19
 ENV HOME /root
 
-RUN  mkdir -p /root/www/fnc-cashier
+RUN  \
+     mkdir -p /root/www/fnc-cashier \
+  && mkdir /var/log/tests
 
 WORKDIR www/fnc-cashier
 
@@ -64,8 +58,9 @@ RUN /bin/bash -l -c \
   && bundle install"
 
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
-    apt-get install nodejs
+    apt-get install nodejs && \
+    cd ~ && \
+    npm install -g appium
 
-RUN cd ~ && npm install -g appium
-
+VOLUME ["/var/log/tests"]
 CMD ["/root/www/fnc-cashier/run.sh"]

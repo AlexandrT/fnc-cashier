@@ -1,7 +1,6 @@
 require 'appium_lib'
 require File.expand_path("../../lib/config.rb", __FILE__)
 require File.expand_path("../../lib/test_logger.rb", __FILE__)
-require 'byebug'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
@@ -18,22 +17,14 @@ RSpec.configure do |config|
 
   config.include UiHelpers::Android, type: :android
 
-  #config.before(:context, :type => :android) do
-    #@adb = ADBClass.new
-    #@adb.start_server
-    #sn = @adb.devices[0]
-    #@adb.install(Config.apk_path, nil, { :serial => sn  }, 60)
-    #@adb.stop_server
-  #end
-
   config.before(:example, :type => :android) do
     options = {
       caps: {
         platformName: 'Android',
         appActivity: 'screens.main.MainActivity',
-#				appPackage: 'com.findnewclient.cashierapp',
         app: Config.apk_path,
-        deviceName: 'test-device'
+        deviceName: 'test-device',
+        autoGrantPermissions: true,
       },
 
       launchTimeout: 4000000
@@ -49,11 +40,4 @@ RSpec.configure do |config|
     @driver.remove_app 'com.findnewclient.cashierapp'
     @driver.driver_quit
   end
-
-  #config.after(:context, :type => :android) do
-    #@adb.start_server
-    #sn = @adb.devices[0]
-    #@adb.uninstall('com.findnewclient.cashierapp', { :serial => sn  })
-    #@adb.stop_server
-  #end
 end

@@ -3,11 +3,9 @@
 cd /root/www/fnc-cashier
 source ~/.bash_profile
 
-appium > /var/log/appium.log 2>&1 &
+appium > /var/log/tests/appium.log 2>&1 &
 
-echo "Starting emulator[$PORT]..."
-emulator64-x86 -avd test -noaudio -no-window -gpu off -verbose -qemu -usbdevice tablet & > /var/log/emulator.log 2>&1 &
+emulator64-arm -avd test -no-boot-anim -noaudio -no-window -verbose -qemu > /var/log/tests/emulator.log 2>&1 &
+adb wait-for-device
 
-echo "Tests run..."
-
-source ~/.bash_profile && rspec spec
+source ~/.bash_profile && rspec spec --out /var/log/tests/tests.log --format documentation
