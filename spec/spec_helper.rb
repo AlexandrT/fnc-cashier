@@ -21,10 +21,11 @@ RSpec.configure do |config|
     options = {
       caps: {
         platformName: 'Android',
-        appActivity: 'screens.main.MainActivity',
+        appActivity: 'screens.splash.SplashView',
         app: Config.apk_path,
         deviceName: 'test-device',
         autoGrantPermissions: true,
+        clearSystemFiles: true
       },
 
       launchTimeout: 4000000

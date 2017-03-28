@@ -28,6 +28,11 @@ RUN \
   && git clone https://github.com/rbenv/ruby-build.git $HOME/.rbenv/plugins/ruby-build \
   && rbenv install 2.3.0
 
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+    apt-get install nodejs && \
+    cd ~ && \
+    npm install -g appium
+
 # install Android SDK
 RUN wget http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz \
   && tar -xvzf android-sdk_r24.4.1-linux.tgz \
@@ -38,7 +43,8 @@ RUN wget http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz \
 # Other tools and resources of Android SDK
 ENV ANDROID_HOME /usr/local/android-sdk
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
-RUN echo y | android update sdk -a --no-ui --force --filter platform-tools,build-tools-24.0.0,android-19,sys-img-armeabi-v7a-android-19
+#RUN echo y | android update sdk -a --no-ui --force --filter platform-tools,build-tools-24.0.0,android-19,sys-img-armeabi-v7a-android-19
+RUN echo y | android update sdk -a --no-ui --force --filter platform-tools,build-tools-24.0.0,android-19,sys-img-armeabi-v7a-google_apis-19
 
 # Set up and run emulator
 RUN echo n | android create avd --force -n test -t android-19
@@ -56,11 +62,6 @@ COPY . /root/www/fnc-cashier
 RUN /bin/bash -l -c \
      "gem install bundler \
   && bundle install"
-
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
-    apt-get install nodejs && \
-    cd ~ && \
-    npm install -g appium
 
 VOLUME ["/var/log/tests"]
 CMD ["/root/www/fnc-cashier/run.sh"]
