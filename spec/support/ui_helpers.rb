@@ -12,12 +12,11 @@ module UiHelpers
       find_element :uiautomator, args
     end
 
-    def scroll_to_text(text)
-      text = %("#{text}")
+    def send_code(phone)
+      id("phone_field").send_keys(phone)
+      id("get_code_action").click
 
-      args = scroll_uiselector("new UiSelector().textContains(#{text})")
-
-      find_element :uiautomator, args
+      xpath("//android.widget.Button[contains(@text, 'ОК')]").click
     end
   end
 end

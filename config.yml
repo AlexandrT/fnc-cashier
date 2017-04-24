@@ -1,4 +1,4 @@
 development:
-  apk_path: '/root/www/fnc-cashier/fnc-cashier-0.0.4-stage-debug.apk'
+  apk_path: '/home/amigo/www/fnc-cashier/fnc-cashier-0.0.4-stage-debug.apk'
 
   log_file: 'test.log'

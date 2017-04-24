@@ -28,17 +28,16 @@ RSpec.configure do |config|
         clearSystemFiles: true
       },
 
-      launchTimeout: 4000000
+      launchTimeout: 400000000
     }
 
-    @driver = Appium::Driver.new(options)
+    driver = Appium::Driver.new(options).start_driver
+    driver.manage.timeouts.implicit_wait = 10
     Appium.promote_appium_methods Object
-    @driver.start_driver
-    #@driver.manage.timeouts.implicit_wait = 10
   end
 
   config.after(:example, :type => :android) do
-    @driver.remove_app 'com.findnewclient.cashierapp'
-    @driver.driver_quit
+    driver.remove_app 'com.findnewclient.cashierapp'
+    driver.driver_quit
   end
 end

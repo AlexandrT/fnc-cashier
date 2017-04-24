@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'byebug'
 
 RSpec.describe "Example test", :type => :android do
   context "" do
@@ -8,8 +7,21 @@ RSpec.describe "Example test", :type => :android do
 
       expect(find_element(:id => "get_code_action")["enabled"]).to eq("false")
 
-      find_element(:id => "text1").click
-      scroll_to_text("Russia")
+      if xpath('//android.widget.Spinner[contains(@resource-id, "country_list")]/android.widget.TextView').text != "Россия"
+        find_element(:id => "text1").click
+
+        begin
+          xpath('//android.widget.ListView/android.widget.TextView[contains(@text, "Россия")]')
+        rescue
+          scroll_to("Россия")
+        end
+      end
+
+      send_code("0000000")
+
+      message = id("message").text
+
+      expect(message).to eq("Введенный номер телефона не зарегистрирован в системе")
     end
   end
 end
